@@ -59,6 +59,66 @@ function onAssetsLoaded(data: any) {
 	background.width = app.screen.width;
 	background.height = app.screen.height;
 
+
+	// EXPERIMENT CONTAINER
+	const experimentContainer = new PIXI.Container();
+	app.stage.addChild(experimentContainer);
+
+	// make a box
+	const box = new PIXI.Graphics()
+
+	box.lineStyle(4, 0xFF3300, 1);
+	// create rectangle with size 300x600, centered at (0, 0)
+	box.drawRect(-100, -100, 350, 400);
+	// box.drawRect(-200, -300, 400, 500); // rectangle with size 200x200, centered at (0, 0)
+	box.endFill();
+	experimentContainer.addChild(box);
+
+	// center the container within the application
+	experimentContainer.position.set(app.renderer.width / 2, app.renderer.height / 2);
+
+	const style = new PIXI.TextStyle({
+    fontFamily: 'Arial',
+    fontSize: 28,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    fill: ['#ffffff', '#00ff99'], // gradient
+    stroke: '#4a1850',
+    strokeThickness: 5,
+    dropShadow: true,
+    dropShadowColor: '#000000',
+    dropShadowBlur: 4,
+    dropShadowAngle: Math.PI / 6,
+    dropShadowDistance: 6,
+    wordWrap: true,
+    wordWrapWidth: 440,
+    lineJoin: 'round',
+});
+
+const LoginText = new PIXI.Text('Login', style);
+LoginText.zIndex = 2;
+LoginText.x = -75;
+LoginText.y = -85;
+LoginText.interactive = true;
+LoginText.on('pointerdown', () => {
+	console.log('LoginText clicked')
+});
+
+const RegisterText = new PIXI.Text('Register', style);
+RegisterText.zIndex = 2;
+RegisterText.x = 30;
+RegisterText.y = -85;
+RegisterText.interactive = true;
+RegisterText.on('pointerdown', () => {
+	console.log('RegisterText clicked')
+});
+
+
+experimentContainer.addChild(LoginText);
+experimentContainer.addChild(RegisterText);
+
+	// EXPERIMENT CONTAINER
+
 	{		/* <Spineboy /> */	}
 	const spineboy = PIXI.Assets.cache.get("spineboy/spineboy.json").spineData;
 	const SpineboyAnimation = new Spine(spineboy);
@@ -85,13 +145,13 @@ function onAssetsLoaded(data: any) {
 	const nameInputComponent = new Input({
 		bg: new PIXI.Graphics()
 				.beginFill( 0xDCB000 )
-				.drawRoundedRect(0, 0, 320, 70, 11 + 5)
+				.drawRoundedRect(0, 0, 280, 55, 11 + 5)
 				.beginFill( 0xF1D583 )
-				.drawRoundedRect(5, 5, 320 - (5 * 2), 70 - (5 * 2), 11),
+				.drawRoundedRect(5, 5, 280 - (5 * 2), 55 - (5 * 2), 11),
 		textStyle: {
 				// ...defaultTextStyle,
 				fill: 0x000000,
-				fontSize: 24,
+				fontSize: 22,
 				},
 		padding: [11, 11],
 		maxLength: 20,
@@ -103,13 +163,13 @@ function onAssetsLoaded(data: any) {
 	const passwordInputComponent = new Input({
 		bg: new PIXI.Graphics()
 				.beginFill( 0xDCB000 )
-				.drawRoundedRect(0, 0, 320, 70, 11 + 5)
+				.drawRoundedRect(0, 0, 280, 55, 11 + 5)
 				.beginFill( 0xF1D583 )
-				.drawRoundedRect(5, 5, 320 - (5 * 2), 70 - (5 * 2), 11),
+				.drawRoundedRect(5, 5, 280 - (5 * 2), 55 - (5 * 2), 11),
 		textStyle: {
 				// ...defaultTextStyle,
 				fill: 0x000000,
-				fontSize: 24,
+				fontSize: 22,
 				},
 		padding: [11, 11],
 		maxLength: 20,
@@ -127,9 +187,9 @@ function onAssetsLoaded(data: any) {
 	// 	},
 	// 	box: generateBox,
 	// });
-
-	nameInputComponent.x = window.innerWidth / 2 - nameInputComponent.width / 2;
-	nameInputComponent.y = window.innerHeight / 2 - nameInputComponent.height / 2;
+	nameInputComponent.position.set(-50 ,50);
+	// nameInputComponent.x = experimentContainer.width / 2 - nameInputComponent.width / 2 ;
+	// nameInputComponent.y = experimentContainer.height / 2 ;
 	nameInputComponent.zIndex = 2;
 	// nameInputComponent.pivot.x = nameInput?.width / 2 || 0;
 	// nameInputComponent.pivot.y = nameInput?.height / 2;
@@ -160,8 +220,10 @@ function onAssetsLoaded(data: any) {
 
 	
 
-	app.stage.addChild(nameInputComponent);
-	app.stage.addChild(passwordInputComponent);
+	// app.stage.addChild(nameInputComponent);
+	// app.stage.addChild(passwordInputComponent);
+	experimentContainer.addChild(nameInputComponent);
+	experimentContainer.addChild(passwordInputComponent);
 
 	// app.stage.addChild(nameInput);
 	// // app.stage.addChild(passwordInput);
