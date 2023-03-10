@@ -1,8 +1,11 @@
-import { Container, Sprite, TextStyle, Text, Graphics, Assets } from "pixi.js";
+import { Container, Sprite, Text, Graphics, Assets } from "pixi.js";
 import { Spine } from "pixi-spine";
+import * as PIXI from "pixi.js";
 import { IScene, Manager } from "../Manager";
-import { Button } from "@pixi/ui";
+// import { Button } from "@pixi/ui";
 import { HomeScene } from "./HomeScene";
+import { Input } from "@pixi/ui";
+import { buttonLoginStyle, forgotPasswordstyle, style } from "../style";
 
 export class SignupScene extends Container implements IScene {
   private background: Sprite;
@@ -22,10 +25,56 @@ export class SignupScene extends Container implements IScene {
     const experimentContainer = new Container();
     this.addChild(experimentContainer);
 
+    const spineboy = Assets.cache.get("spineboy/spineboy.json").spineData;
+    const SpineboyAnimation = new Spine(spineboy);
+
+    // set the position
+    SpineboyAnimation.x = -50;
+    SpineboyAnimation.y = 300;
+
+    SpineboyAnimation.scale.set(0.4);
+
+    // set up the mixes!
+    SpineboyAnimation.stateData.setMix("walk", "jump", 0.2);
+    SpineboyAnimation.stateData.setMix("jump", "walk", 0.4);
+
+    // play animation
+    SpineboyAnimation.state.setAnimation(0, "walk", true);
+    spineboy.zIndex = 0
+
+
+    const dragonAsset = PIXI.Assets.cache.get("dragon/dragon.json").spineData;
+    const dragon = new Spine(dragonAsset);
+    console.log("onAssetsLoaded ~ dragon:", dragon);
+    dragon.skeleton.setToSetupPose();
+    dragon.update(0);
+    dragon.autoUpdate = true;
+
+    // create a container for the spine animation and add the animation to it
+    const dragonCage = new PIXI.Container();
+    dragonCage.addChild(dragon);
+
+    // measure the spine animation and position it inside its container to align it to the origin
+    const localRect = dragon.getLocalBounds();
+    dragon.position.set(-localRect.x, -localRect.y);
+
+    // now we can scale, position and rotate the container as any other display object
+    const scale = (0.2);
+    dragonCage.scale.set(scale);
+    dragonCage.position.set(
+      90,
+      200
+    );
+    dragon.state.setAnimation(0, "flying", true);
+
+    experimentContainer.addChild(SpineboyAnimation);
+    experimentContainer.addChild(dragonCage);
+
+
     // make a box
     const box = new Graphics();
 
-    box.lineStyle(4, 0xff3300, 1);
+    box.lineStyle(4, 0xffBB00, 1);
     // create rectangle with size 300x600, centered at (0, 0)
     box.drawRect(-100, -100, 350, 400);
     // box.drawRect(-200, -300, 400, 500); // rectangle with size 200x200, centered at (0, 0)
@@ -34,51 +83,44 @@ export class SignupScene extends Container implements IScene {
 
     // center the container within the application
     experimentContainer.position.set(
-      window.innerWidth / 2,
-      window.innerHeight / 2
+      window.innerWidth / 2 - 100,
+      window.innerHeight / 2 - 100
     );
 
-    // const button = new Button(
-
-    // );
     const buttonView = new Graphics()
       .beginFill(0xffffff)
-      .drawRoundedRect(0, 0, 100, 50, 15);
-    const text = new Text("Home", { fontSize: 32 });
+      .drawRoundedRect(20, 200, 100, 50, 15);
 
-    text.anchor.set(0.5);
-    text.x = buttonView.width / 2;
-    text.y = buttonView.height / 2;
-
-    buttonView.addChild(text);
-
-    // Component usage !!!
-    const button = new Button(buttonView);
-
-    button.onPress.connect(() => {
-      console.log("Button pressed!");
+    const buttonLoginText = new Text("Login", buttonLoginStyle);
+    buttonLoginText.anchor.set(0.5, 0.5)
+    buttonLoginText.zIndex = 2;
+    buttonLoginText.x = buttonView.width / 2 + 20;
+    buttonLoginText.y = buttonView.height / 2 + 200;
+    // @ts-ignore
+    buttonLoginText.interactive = true;
+    // @ts-ignore
+    buttonLoginText.on("pointerdown", () => {
+      console.log("LoginText clicked");
       Manager.changeScene(new HomeScene());
     });
 
-    experimentContainer.addChild(button.view);
+    // text.anchor.set(0.5, 0.5);
+    // text.x = buttonView.width / 2 + 20;
+    // text.y = buttonView.height / 2 + 200;
 
-    const style = new TextStyle({
-      fontFamily: "Arial",
-      fontSize: 28,
-      fontStyle: "italic",
-      fontWeight: "bold",
-      fill: ["#ffffff", "#00ff99"], // gradient
-      stroke: "#4a1850",
-      strokeThickness: 5,
-      dropShadow: true,
-      dropShadowColor: "#000000",
-      dropShadowBlur: 4,
-      dropShadowAngle: Math.PI / 6,
-      dropShadowDistance: 6,
-      wordWrap: true,
-      wordWrapWidth: 440,
-      lineJoin: "round",
-    });
+    buttonView.addChild(buttonLoginText);
+
+    // Component usage !!!
+    // const button = new Button(buttonView);
+
+    // button.onPress.connect(() => {
+    //   console.log("Button pressed!");
+    //   Manager.changeScene(new HomeScene());
+    // });
+
+    experimentContainer.addChild(buttonLoginText);
+
+
 
     const LoginText = new Text("Login", style);
     LoginText.zIndex = 2;
@@ -102,24 +144,76 @@ export class SignupScene extends Container implements IScene {
       console.log("RegisterText clicked");
     });
 
+    const ForgotPasswordText = new Text("Forgot password?", forgotPasswordstyle);
+    ForgotPasswordText.zIndex = 2;
+    ForgotPasswordText.x = 80;
+    ForgotPasswordText.y = 150;
+    // @ts-ignore
+    ForgotPasswordText.interactive = true;
+    // @ts-ignore
+    ForgotPasswordText.on("pointerdown", () => {
+      console.log("Forgot password clicked");
+    });
+
+    let nameInput: any, passwordInput: any;
+
+    const nameInputComponent = new Input({
+      bg: new PIXI.Graphics()
+        .beginFill(0xdcb000)
+        .drawRoundedRect(0, 0, 280, 55, 11 + 5)
+        .beginFill(0xf1d583)
+        .drawRoundedRect(5, 5, 280 - 5 * 2, 55 - 5 * 2, 11),
+      textStyle: {
+        // ...defaultTextStyle,
+        fill: 0x000000,
+        fontSize: 22,
+      },
+      padding: [11, 11],
+      maxLength: 20,
+      align: "center",
+      placeholder: "Enter your name",
+      value: nameInput,
+    });
+    nameInputComponent.position.set(-60, 10);
+    nameInputComponent.zIndex = 2;
+    nameInputComponent.onChange.connect((e) => {
+      console.log("onAssetsLoaded ~ nameInputComponent onChange:", e);
+    });
+
+
+    nameInputComponent.onChange.connect((e) => {
+      console.log("onAssetsLoaded ~ nameInputComponent onChange:", e);
+    });
+
+    const passwordInputComponent = new Input({
+      bg: new PIXI.Graphics()
+        .beginFill(0xdcb000)
+        .drawRoundedRect(0, 0, 280, 55, 11 + 5)
+        .beginFill(0xf1d583)
+        .drawRoundedRect(5, 5, 280 - 5 * 2, 55 - 5 * 2, 11),
+      textStyle: {
+        // ...defaultTextStyle,
+        fill: 0x000000,
+        fontSize: 22,
+      },
+      padding: [11, 11],
+      maxLength: 20,
+      align: "center",
+      placeholder: "Enter your Password",
+      value: passwordInput,
+    });
+    passwordInputComponent.position.set(-60, 80)
+    passwordInputComponent.zIndex = 2;
+    passwordInputComponent.onChange.connect((e) => {
+      console.log("onAssetsLoaded ~ passwordInputComponent onChange:", e);
+    });
+
+    experimentContainer.addChild(nameInputComponent);
+    experimentContainer.addChild(passwordInputComponent);
     experimentContainer.addChild(LoginText);
     experimentContainer.addChild(RegisterText);
+    experimentContainer.addChild(ForgotPasswordText);
 
-    const spineboy = Assets.cache.get("spineboy/spineboy.json").spineData;
-    const SpineboyAnimation = new Spine(spineboy);
-
-    // set the position
-    SpineboyAnimation.x = Manager.width / 5;
-    SpineboyAnimation.y = Manager.height;
-
-    SpineboyAnimation.scale.set(1);
-
-    // set up the mixes!
-    SpineboyAnimation.stateData.setMix("walk", "jump", 0.2);
-    SpineboyAnimation.stateData.setMix("jump", "walk", 0.4);
-
-    // play animation
-    SpineboyAnimation.state.setAnimation(0, "walk", true);
     // app.stage.addChild(SpineboyAnimation);
     // this.addChild(SpineboyAnimation);
 
