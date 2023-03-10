@@ -4,10 +4,11 @@ import * as PIXI from "pixi.js";
 import { IScene, Manager } from "../Manager";
 // import { Button } from "@pixi/ui";
 import { HomeScene } from "./HomeScene";
+import { LoginScene } from "./LoginScene";
 import { Input } from "@pixi/ui";
-import { buttonLoginStyle, forgotPasswordstyle, style } from "../style";
+import { buttonLoginStyle, style } from "../style";
 
-export class SignupScene extends Container implements IScene {
+export class RegisterScene extends Container implements IScene {
   private background: Sprite;
   // private username: string;
   // private password: string;
@@ -30,9 +31,9 @@ export class SignupScene extends Container implements IScene {
 
     // set the position
     SpineboyAnimation.x = -50;
-    SpineboyAnimation.y = 300;
+    SpineboyAnimation.y = 400;
 
-    SpineboyAnimation.scale.set(0.4);
+    SpineboyAnimation.scale.set(0.3);
 
     // set up the mixes!
     SpineboyAnimation.stateData.setMix("walk", "jump", 0.2);
@@ -59,11 +60,11 @@ export class SignupScene extends Container implements IScene {
     dragon.position.set(-localRect.x, -localRect.y);
 
     // now we can scale, position and rotate the container as any other display object
-    const scale = (0.2);
+    const scale = (0.15);
     dragonCage.scale.set(scale);
     dragonCage.position.set(
-      90,
-      200
+      120,
+      310
     );
     dragon.state.setAnimation(0, "flying", true);
 
@@ -76,7 +77,7 @@ export class SignupScene extends Container implements IScene {
 
     box.lineStyle(4, 0xffBB00, 1);
     // create rectangle with size 300x600, centered at (0, 0)
-    box.drawRect(-100, -100, 350, 400);
+    box.drawRect(-100, -100, 350, 500);
     // box.drawRect(-200, -300, 400, 500); // rectangle with size 200x200, centered at (0, 0)
     box.endFill();
     experimentContainer.addChild(box);
@@ -84,23 +85,23 @@ export class SignupScene extends Container implements IScene {
     // center the container within the application
     experimentContainer.position.set(
       window.innerWidth / 2 - 100,
-      window.innerHeight / 2 - 100
+      window.innerHeight / 2 - 150
     );
 
     const buttonView = new Graphics()
       .beginFill(0xffffff)
       .drawRoundedRect(20, 200, 100, 50, 15);
 
-    const buttonLoginText = new Text("Login", buttonLoginStyle);
-    buttonLoginText.anchor.set(0.5, 0.5)
-    buttonLoginText.zIndex = 2;
-    buttonLoginText.x = buttonView.width / 2 + 20;
-    buttonLoginText.y = buttonView.height / 2 + 200;
+    const buttonRegisterSubmit = new Text("Submit", buttonLoginStyle);
+    buttonRegisterSubmit.anchor.set(0.5, 0.5)
+    buttonRegisterSubmit.zIndex = 2;
+    buttonRegisterSubmit.x = buttonView.width / 2 + 20;
+    buttonRegisterSubmit.y = buttonView.height / 2 + 320;
     // @ts-ignore
-    buttonLoginText.interactive = true;
+    buttonRegisterSubmit.interactive = true;
     // @ts-ignore
-    buttonLoginText.on("pointerdown", () => {
-      console.log("LoginText clicked");
+    buttonRegisterSubmit.on("pointerdown", () => {
+      console.log("buttonRegisterSubmit clicked");
       Manager.changeScene(new HomeScene());
     });
 
@@ -108,7 +109,7 @@ export class SignupScene extends Container implements IScene {
     // text.x = buttonView.width / 2 + 20;
     // text.y = buttonView.height / 2 + 200;
 
-    buttonView.addChild(buttonLoginText);
+    buttonView.addChild(buttonRegisterSubmit);
 
     // Component usage !!!
     // const button = new Button(buttonView);
@@ -118,7 +119,7 @@ export class SignupScene extends Container implements IScene {
     //   Manager.changeScene(new HomeScene());
     // });
 
-    experimentContainer.addChild(buttonLoginText);
+    experimentContainer.addChild(buttonRegisterSubmit);
 
 
 
@@ -131,6 +132,7 @@ export class SignupScene extends Container implements IScene {
     // @ts-ignore
     LoginText.on("pointerdown", () => {
       console.log("LoginText clicked");
+      Manager.changeScene(new LoginScene());
     });
 
     const RegisterText = new Text("Register", style);
@@ -144,16 +146,6 @@ export class SignupScene extends Container implements IScene {
       console.log("RegisterText clicked");
     });
 
-    const ForgotPasswordText = new Text("Forgot password?", forgotPasswordstyle);
-    ForgotPasswordText.zIndex = 2;
-    ForgotPasswordText.x = 80;
-    ForgotPasswordText.y = 150;
-    // @ts-ignore
-    ForgotPasswordText.interactive = true;
-    // @ts-ignore
-    ForgotPasswordText.on("pointerdown", () => {
-      console.log("Forgot password clicked");
-    });
 
     let nameInput: any, passwordInput: any;
 
@@ -208,11 +200,58 @@ export class SignupScene extends Container implements IScene {
       console.log("onAssetsLoaded ~ passwordInputComponent onChange:", e);
     });
 
+    const reenterPasswordInputComponent = new Input({
+      bg: new PIXI.Graphics()
+        .beginFill(0xdcb000)
+        .drawRoundedRect(0, 0, 280, 55, 11 + 5)
+        .beginFill(0xf1d583)
+        .drawRoundedRect(5, 5, 280 - 5 * 2, 55 - 5 * 2, 11),
+      textStyle: {
+        // ...defaultTextStyle,
+        fill: 0x000000,
+        fontSize: 22,
+      },
+      padding: [11, 11],
+      maxLength: 20,
+      align: "center",
+      placeholder: "Re-enter your Password",
+      value: passwordInput,
+    });
+    reenterPasswordInputComponent.position.set(-60, 150)
+    reenterPasswordInputComponent.zIndex = 2;
+    reenterPasswordInputComponent.onChange.connect((e) => {
+      console.log("onAssetsLoaded ~ reenterPasswordInputComponent onChange:", e);
+    });
+
+    const referralCodeInputComponent = new Input({
+      bg: new PIXI.Graphics()
+        .beginFill(0xdcb000)
+        .drawRoundedRect(0, 0, 280, 55, 11 + 5)
+        .beginFill(0xf1d583)
+        .drawRoundedRect(5, 5, 280 - 5 * 2, 55 - 5 * 2, 11),
+      textStyle: {
+        // ...defaultTextStyle,
+        fill: 0x000000,
+        fontSize: 22,
+      },
+      padding: [11, 11],
+      maxLength: 20,
+      align: "center",
+      placeholder: "Referral Code (Optional)",
+      value: passwordInput,
+    });
+    referralCodeInputComponent.position.set(-60, 220)
+    referralCodeInputComponent.zIndex = 2;
+    referralCodeInputComponent.onChange.connect((e) => {
+      console.log("onAssetsLoaded ~ referralCodeInputComponent onChange:", e);
+    });
+
     experimentContainer.addChild(nameInputComponent);
     experimentContainer.addChild(passwordInputComponent);
+    experimentContainer.addChild(reenterPasswordInputComponent);
+    experimentContainer.addChild(referralCodeInputComponent);
     experimentContainer.addChild(LoginText);
     experimentContainer.addChild(RegisterText);
-    experimentContainer.addChild(ForgotPasswordText);
 
     // app.stage.addChild(SpineboyAnimation);
     // this.addChild(SpineboyAnimation);

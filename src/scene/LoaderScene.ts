@@ -2,7 +2,7 @@ import { Container, Graphics, Assets } from "pixi.js";
 import { manifest } from "../assets";
 import { IScene, Manager } from "../Manager";
 // import { GameScene } from "./scene/GameSceneExample";
-import { HomeScene } from "./HomeScene";
+import { LoginScene } from "./LoginScene";
 
 export class LoaderScene extends Container implements IScene {
   // for making our loader graphics...
@@ -51,7 +51,7 @@ export class LoaderScene extends Container implements IScene {
   private gameLoaded(): void {
     // Change scene to the game scene!
     // Manager.changeScene(new GameScene());
-    Manager.changeScene(new HomeScene());
+    Manager.changeScene(new LoginScene());
   }
 
   // @ts-ignore

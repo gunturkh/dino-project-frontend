@@ -8,7 +8,7 @@ import {
 } from "pixi.js";
 // import { Spine } from "pixi-spine";
 import { IScene, Manager } from "../Manager";
-import { SignupScene } from "./SignupScene";
+import { LoginScene } from "./LoginScene";
 import { Button } from "@pixi/ui";
 
 export class HomeScene extends Container implements IScene {
@@ -41,7 +41,7 @@ export class HomeScene extends Container implements IScene {
 
     button.onPress.connect(() => {
       console.log("Button pressed!");
-      Manager.changeScene(new SignupScene());
+      Manager.changeScene(new LoginScene());
     });
 
     this.addChild(button.view);
