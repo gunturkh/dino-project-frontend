@@ -9,7 +9,8 @@
   "dependencies": {
     "@pixi/ui": "^0.5.8",
     "pixi-spine": "^4.0.3",
-    "pixi.js": "^7.1.4"
+    "pixi.js": "^7.1.4",
+    "pixi3d": "^2.2.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
