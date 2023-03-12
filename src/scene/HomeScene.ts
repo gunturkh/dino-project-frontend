@@ -6,6 +6,16 @@ import {
 
   // TextStyle, Assets
 } from "pixi.js";
+// import {
+//   Model,
+//   LightingEnvironment,
+//   Light,
+//   Mesh3D,
+//   ShadowCastingLight,
+//   ShadowQuality,
+//   CameraOrbitControl,
+//   Color
+// } from "pixi3d";
 // import { Spine } from "pixi-spine";
 import { IScene, Manager } from "../Manager";
 import { LoginScene } from "./LoginScene";
@@ -22,6 +32,17 @@ export class HomeScene extends Container implements IScene {
     this.background = Sprite.from("ForestBg");
     this.background.width = Manager.width;
     this.background.height = Manager.height;
+
+    // TODO: need to add this to something that use background
+    this.background.anchor.set(0.5); //center of image
+    //is mapped to
+    this.background.position.set(Manager.width / 2, Manager.height / 2); //center of screen
+
+    this.background.scale.set(
+      // this.background.texture.width / window.innerWidth,
+      1,
+      0.5
+    );
 
     this.addChild(this.background);
 
@@ -53,9 +74,8 @@ export class HomeScene extends Container implements IScene {
 
     // make a box
     const box = new Graphics();
-    // create a hidden rectangle for width and height of the container
-    // box.lineStyle(0.0001, 0x0000, 0);
-    box.lineStyle(1, 0x0000, 1);
+    box.lineStyle(0.0001, 0x0000, 0);
+    // box.lineStyle(1, 0x0000, 1); // use for debugging to show container border
     // create rectangle with size 300x600, centered at the half of the screen
     box.drawRect(Manager.width / 2 - boxWidth / 2, 0, boxWidth, Manager.height);
 

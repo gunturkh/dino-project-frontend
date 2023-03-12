@@ -9,6 +9,9 @@ export const manifest: ResolverManifest = {
         Dragon: "dragon/dragon.json",
         ForestBg: "image/forest_background.jpg",
         Clampy: "clampy.png",
+        Teapot:
+          "https://raw.githubusercontent.com/jnsmalm/pixi3d-examples/master/assets/teapot/teapot.gltf",
+        Deer: "image/3d/deer.gltf",
       },
     },
     // {

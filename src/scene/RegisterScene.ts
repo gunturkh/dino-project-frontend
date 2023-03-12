@@ -41,8 +41,7 @@ export class RegisterScene extends Container implements IScene {
 
     // play animation
     SpineboyAnimation.state.setAnimation(0, "walk", true);
-    spineboy.zIndex = 0
-
+    spineboy.zIndex = 0;
 
     const dragonAsset = PIXI.Assets.cache.get("dragon/dragon.json").spineData;
     const dragon = new Spine(dragonAsset);
@@ -60,31 +59,29 @@ export class RegisterScene extends Container implements IScene {
     dragon.position.set(-localRect.x, -localRect.y);
 
     // now we can scale, position and rotate the container as any other display object
-    const scale = (0.15);
+    const scale = 0.15;
     dragonCage.scale.set(scale);
-    dragonCage.position.set(
-      120,
-      310
-    );
+    dragonCage.position.set(120, 310);
     dragon.state.setAnimation(0, "flying", true);
 
     experimentContainer.addChild(SpineboyAnimation);
     experimentContainer.addChild(dragonCage);
 
-
     // make a box
     const box = new Graphics();
+    const boxWidth = 350;
+    const boxHeight = 500;
 
-    box.lineStyle(4, 0xffBB00, 1);
+    box.lineStyle(4, 0xffbb00, 1);
     // create rectangle with size 300x600, centered at (0, 0)
-    box.drawRect(-100, -100, 350, 500);
+    box.drawRect(-100, -100, boxWidth, boxHeight);
     // box.drawRect(-200, -300, 400, 500); // rectangle with size 200x200, centered at (0, 0)
     box.endFill();
     experimentContainer.addChild(box);
 
     // center the container within the application
     experimentContainer.position.set(
-      window.innerWidth / 2 - 100,
+      window.innerWidth / 2 - boxWidth / 2 + 100,
       window.innerHeight / 2 - 150
     );
 
@@ -93,7 +90,7 @@ export class RegisterScene extends Container implements IScene {
       .drawRoundedRect(20, 200, 100, 50, 15);
 
     const buttonRegisterSubmit = new Text("Submit", buttonLoginStyle);
-    buttonRegisterSubmit.anchor.set(0.5, 0.5)
+    buttonRegisterSubmit.anchor.set(0.5, 0.5);
     buttonRegisterSubmit.zIndex = 2;
     buttonRegisterSubmit.x = buttonView.width / 2 + 20;
     buttonRegisterSubmit.y = buttonView.height / 2 + 320;
@@ -121,8 +118,6 @@ export class RegisterScene extends Container implements IScene {
 
     experimentContainer.addChild(buttonRegisterSubmit);
 
-
-
     const LoginText = new Text("Login", style);
     LoginText.zIndex = 2;
     LoginText.x = -75;
@@ -145,7 +140,6 @@ export class RegisterScene extends Container implements IScene {
     RegisterText.on("pointerdown", () => {
       console.log("RegisterText clicked");
     });
-
 
     let nameInput: any, passwordInput: any;
 
@@ -172,7 +166,6 @@ export class RegisterScene extends Container implements IScene {
       console.log("onAssetsLoaded ~ nameInputComponent onChange:", e);
     });
 
-
     nameInputComponent.onChange.connect((e) => {
       console.log("onAssetsLoaded ~ nameInputComponent onChange:", e);
     });
@@ -194,7 +187,7 @@ export class RegisterScene extends Container implements IScene {
       placeholder: "Enter your Password",
       value: passwordInput,
     });
-    passwordInputComponent.position.set(-60, 80)
+    passwordInputComponent.position.set(-60, 80);
     passwordInputComponent.zIndex = 2;
     passwordInputComponent.onChange.connect((e) => {
       console.log("onAssetsLoaded ~ passwordInputComponent onChange:", e);
@@ -217,10 +210,13 @@ export class RegisterScene extends Container implements IScene {
       placeholder: "Re-enter your Password",
       value: passwordInput,
     });
-    reenterPasswordInputComponent.position.set(-60, 150)
+    reenterPasswordInputComponent.position.set(-60, 150);
     reenterPasswordInputComponent.zIndex = 2;
     reenterPasswordInputComponent.onChange.connect((e) => {
-      console.log("onAssetsLoaded ~ reenterPasswordInputComponent onChange:", e);
+      console.log(
+        "onAssetsLoaded ~ reenterPasswordInputComponent onChange:",
+        e
+      );
     });
 
     const referralCodeInputComponent = new Input({
@@ -240,7 +236,7 @@ export class RegisterScene extends Container implements IScene {
       placeholder: "Referral Code (Optional)",
       value: passwordInput,
     });
-    referralCodeInputComponent.position.set(-60, 220)
+    referralCodeInputComponent.position.set(-60, 220);
     referralCodeInputComponent.zIndex = 2;
     referralCodeInputComponent.onChange.connect((e) => {
       console.log("onAssetsLoaded ~ referralCodeInputComponent onChange:", e);
