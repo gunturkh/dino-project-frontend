@@ -7,6 +7,7 @@ import { HomeScene } from "./HomeScene";
 import { Input } from "@pixi/ui";
 import { buttonLoginStyle, forgotPasswordstyle, style } from "../style";
 import { RegisterScene } from "./RegisterScene";
+import * as PIXI3D from "pixi3d/pixi7";
 
 export class LoginScene extends Container implements IScene {
   private background: Sprite;
@@ -208,6 +209,66 @@ export class LoginScene extends Container implements IScene {
       console.log("onAssetsLoaded ~ passwordInputComponent onChange:", e);
     });
 
+    const testAAA = PIXI.Assets.load([
+      "Teapot",
+      "diffuse.cubemap",
+      "specular.cubemap",
+    ]);
+    console.log(
+      "🚀 ~ file: RegisterScene.ts:253 ~ RegisterScene ~ constructor ~ testAAA:",
+      testAAA
+    );
+
+    (async function load() {
+      let gltf = await PIXI.Assets.load([
+        "Teapot",
+        "diffuse.cubemap",
+        "specular.cubemap",
+      ]);
+      setup(gltf);
+    })();
+
+    function setup(gltf: any) {
+      let model = experimentContainer.addChild(PIXI3D.Model.from(gltf.Teapot));
+      model.y = -0.8;
+      model.meshes.forEach((mesh) => {
+        // @ts-ignore
+        mesh.material.exposure = 2;
+        // mesh.material.roughness = 0.5;
+        // mesh.material.metallic = 0;
+      });
+
+      setInterval(() => {
+        for (let anim of model.animations) {
+          // Start to play all animations in the model.
+          anim.play();
+          anim.loop = false;
+          anim.speed = 1;
+        }
+      }, 1000);
+
+      model.scale.set(0.2, 0.2, 0.2);
+
+      PIXI3D.LightingEnvironment.main.lights.push(
+        Object.assign(new PIXI3D.Light(), { x: 3, z: 3 })
+      );
+
+      // PIXI3D.LightingEnvironment.main = new PIXI3D.LightingEnvironment(
+      //   // @ts-ignore TODO: need to point at the Manager app renderer
+      //   Manager.app.renderer,
+      //   new PIXI3D.ImageBasedLighting(
+      //     gltf["diffuse.cubemap"].cubemap,
+      //     gltf["specular.cubemap"].cubemap
+      //   )
+      // );
+
+      // @ts-ignore
+      let control = new PIXI3D.CameraOrbitControl(Manager.app.view);
+      control.angles.x = 20;
+      // control.angles.y = 210;
+      // control.allowControl = false;
+    }
+
     experimentContainer.addChild(nameInputComponent);
     experimentContainer.addChild(passwordInputComponent);
     experimentContainer.addChild(LoginText);
@@ -221,6 +282,7 @@ export class LoginScene extends Container implements IScene {
   }
   // @ts-ignore
   update(framesPassed: number): void {
+    // TODO: bring the setIntervals for animation here
     // throw new Error("Method not implemented.");
     // console.log("framesPassed", framesPassed);
   }

@@ -6,7 +6,7 @@ export class Manager {
   }
 
   // Safely store variables for our game
-  private static app: Application;
+  public static app: Application;
   private static currentScene: IScene;
 
   // Width and Height are read-only after creation (for now)
