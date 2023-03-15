@@ -20,6 +20,7 @@ import {
 import { IScene, Manager } from "../Manager";
 // import { LoginScene } from "./LoginScene";
 import { Button } from "@pixi/ui";
+import { HomeScene } from "./HomeScene";
 
 export class ProfileScene extends Container implements IScene {
   private background: Sprite;
@@ -61,7 +62,7 @@ export class ProfileScene extends Container implements IScene {
     const button = new Button(buttonView);
 
     button.onPress.connect(() => {
-      console.log("Button pressed!");
+      Manager.changeScene(new HomeScene())
     });
 
     this.addChild(button.view);
@@ -87,7 +88,7 @@ export class ProfileScene extends Container implements IScene {
 
       ButtonProfile.onPress.connect(() => {
         // Manager.changeScene(new LoginScene());
-        window.alert('referral')
+        window.alert(`button: ${buttonItem} clicked!`)
       });
 
       ButtonProfile.view.position.set(
