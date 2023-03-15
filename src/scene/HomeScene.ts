@@ -19,6 +19,7 @@ import {
 // import { Spine } from "pixi-spine";
 import { IScene, Manager } from "../Manager";
 import { LoginScene } from "./LoginScene";
+import { ProfileScene } from "./ProfileScene";
 import { Button } from "@pixi/ui";
 
 export class HomeScene extends Container implements IScene {
@@ -309,6 +310,10 @@ export class HomeScene extends Container implements IScene {
       Manager.width / 2 + boxWidth / 2 - 50 - BtnClone8.view.width / 2,
       Manager.height - BtnClone8.view.height - 20
     );
+    BtnClone8.onPress.connect(() => {
+      // window.alert('go to profile')
+      Manager.changeScene(new ProfileScene());
+    })
     box.addChild(BtnClone8.view);
 
     this.addChild(experimentContainer);
