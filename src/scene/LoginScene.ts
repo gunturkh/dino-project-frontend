@@ -1,4 +1,4 @@
-import { Container, Sprite, Text, Graphics, Assets } from "pixi.js";
+import { Container, Text, Graphics, Assets } from "pixi.js";
 import { Spine } from "pixi-spine";
 import * as PIXI from "pixi.js";
 import { IScene, Manager } from "../Manager";
@@ -9,19 +9,20 @@ import { buttonLoginStyle, forgotPasswordstyle, style } from "../style";
 import { RegisterScene } from "./RegisterScene";
 import * as PIXI3D from "pixi3d/pixi7";
 
+
 export class LoginScene extends Container implements IScene {
-  private background: Sprite;
+  // private background: Sprite;
   // private username: string;
   // private password: string;
   constructor() {
     super();
 
     // Inside assets.ts we have a line that says `"Clampy from assets.ts!": "./clampy.png",`
-    this.background = Sprite.from("ForestBg");
-    this.background.width = Manager.width;
-    this.background.height = Manager.height;
+    // this.background = Sprite.from("ForestBg");
+    // this.background.width = Manager.width;
+    // this.background.height = Manager.height;
 
-    this.addChild(this.background);
+    // this.addChild(this.background);
 
     // EXPERIMENT CONTAINER
     const experimentContainer = new Container();

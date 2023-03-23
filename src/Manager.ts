@@ -1,4 +1,4 @@
-import { Application, DisplayObject } from "pixi.js";
+import { Application, DisplayObject, Sprite } from "pixi.js";
 
 export class Manager {
   private constructor() {
@@ -27,7 +27,7 @@ export class Manager {
   public static initialize(
     width: number,
     height: number,
-    background: number
+    background: number | string
   ): void {
     // store our width and height
     Manager._width = width;
@@ -43,8 +43,24 @@ export class Manager {
       height: height,
     });
 
+
+    // set background image in app
+    const bg = Sprite.from("image/Background.png");
+    bg.anchor.set(0.5, 0.5);
+    // bg.width = Manager.width < 450 ? Manager.width * 1.5 : Manager.width;
+    bg.width = Manager.width < 1024 ? 1024 : Manager.width;
+    bg.height = Manager.height < 768 ? 768 : Manager.height;
+    bg.position.set(Manager.width / 2, Manager.height / 2);
+    Manager.app.stage.addChild(bg);
+
     // Add the ticker
     Manager.app.ticker.add(Manager.update);
+
+    // listen for the browser telling us that the screen size changed
+    window.addEventListener("resize", Manager.resize);
+
+    // call it manually once so we are sure we are the correct size after starting
+    Manager.resize();
   }
 
   // Call this function when you want to go to a new scene
@@ -70,7 +86,37 @@ export class Manager {
 
     // as I said before, I HATE the "frame passed" approach. I would rather use `Manager.app.ticker.deltaMS`
   }
+
+  public static resize(): void {
+    // current screen size
+    const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    // uniform scale for our game
+    const scale = Math.min(screenWidth / Manager.width, screenHeight / Manager.height);
+
+    // the "uniformly englarged" size for our game
+    const enlargedWidth = Math.floor(scale * Manager.width);
+    const enlargedHeight = Math.floor(scale * Manager.height);
+
+    // margins for centering our game
+    const horizontalMargin = (screenWidth - enlargedWidth) / 2;
+    const verticalMargin = (screenHeight - enlargedHeight) / 2;
+
+    // now we use css trickery to set the sizes and margins
+    // @ts-ignore
+    Manager.app.view.style.width = `${enlargedWidth}px`;
+    // @ts-ignore
+    Manager.app.view.style.height = `${enlargedHeight}px`;
+    // @ts-ignore
+    Manager.app.view.style.marginLeft = Manager.app.view.style.marginRight = `${horizontalMargin}px`;
+    // @ts-ignore
+    Manager.app.view.style.marginTop = Manager.app.view.style.marginBottom = `${verticalMargin}px`;
+  }
+
 }
+
+
 
 // This could have a lot more generic functions that you force all your scenes to have. Update is just an example.
 // Also, this could be in its own file...

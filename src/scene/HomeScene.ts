@@ -23,29 +23,29 @@ import { ProfileScene } from "./ProfileScene";
 import { Button } from "@pixi/ui";
 
 export class HomeScene extends Container implements IScene {
-  private background: Sprite;
+  // private background: Sprite;
   // private username: string;
   // private password: string;
   constructor() {
     super();
 
     // Inside assets.ts we have a line that says `"Clampy from assets.ts!": "./clampy.png",`
-    this.background = Sprite.from("ForestBg");
-    this.background.width = Manager.width;
-    this.background.height = Manager.height;
+    // this.background = Sprite.from("ForestBg");
+    // this.background.width = Manager.width;
+    // this.background.height = Manager.height;
 
     // TODO: need to add this to something that use background
-    this.background.anchor.set(0.5); //center of image
+    // this.background.anchor.set(0.5); //center of image
     //is mapped to
-    this.background.position.set(Manager.width / 2, Manager.height / 2); //center of screen
+    // this.background.position.set(Manager.width / 2, Manager.height / 2); //center of screen
 
-    this.background.scale.set(
-      // this.background.texture.width / window.innerWidth,
-      1,
-      0.5
-    );
+    // this.background.scale.set(
+    //   // this.background.texture.width / window.innerWidth,
+    //   1,
+    //   0.5
+    // );
 
-    this.addChild(this.background);
+    // this.addChild(this.background);
 
     const buttonView = new Graphics()
       .beginFill(0xffffff)
